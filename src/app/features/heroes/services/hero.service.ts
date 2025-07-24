@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Hero } from '../models/hero.model';
 import { delay, Observable, of, throwError } from 'rxjs';
+import { MOCK_HEROES } from '../../../mocks/mock-heroes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
 
-  private heroes: Hero[] = [];
+  private heroes: Hero[] = [...MOCK_HEROES];
 
   constructor() { }
 
