@@ -1,0 +1,17 @@
+<div class="page-container">
+  <h1>Our Heroes</h1>
+
+  @if (heroes$ | async; as heroes) {
+  <div class="hero-list">
+    <div class="cards-container">
+      @for(hero of heroes; track hero.id) {
+      <!-- TODO: Apply presentational card component -->
+      }
+    </div>
+  </div>
+  } @else {
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
+</div>
