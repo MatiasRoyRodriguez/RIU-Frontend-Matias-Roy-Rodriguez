@@ -1,0 +1,15 @@
+// TODO: Add styles for hero-card component
+
+.hero-card {
+  max-width: 300px;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
+}
+
+.hero-img {
+  max-height: 200px;
+  object-fit: cover;
+}

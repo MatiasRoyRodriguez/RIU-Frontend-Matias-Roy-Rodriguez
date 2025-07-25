@@ -5,7 +5,7 @@
   <div class="hero-list">
     <div class="cards-container">
       @for(hero of heroes; track hero.id) {
-      <!-- TODO: Apply presentational card component -->
+      <app-hero-card [hero]="hero" />
       }
     </div>
   </div>
