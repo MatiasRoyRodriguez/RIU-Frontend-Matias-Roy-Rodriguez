@@ -7,8 +7,6 @@ import { HeroCardComponent } from '../../components/hero-card/hero-card.componen
 @Component({
   selector: 'app-hero-list',
   imports: [
-    NgIf,
-    NgFor,
     AsyncPipe,
     MatCardModule,
     MatProgressSpinnerModule,
