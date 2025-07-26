@@ -1,11 +1,16 @@
 <div class="page-container">
   <h1>Edit Hero</h1>
-
-  @if (hero(); as hero) {
-  <app-hero-form [hero]="hero" (submitForm)="onSubmit($event)" />
-  } @else {
+  @if (hero() === null) {
   <div class="spinner-container">
     <mat-spinner />
   </div>
+  } @else if (hero() === undefined) {
+  <app-entity-not-found
+    entityName="hero"
+    redirectPath="/"
+    backLabel="all heroes"
+  />
+  } @else {
+  <app-hero-form [hero]="hero()!" (submitForm)="onSubmit($event)" />
   }
 </div>

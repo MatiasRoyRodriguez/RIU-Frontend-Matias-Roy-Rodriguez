@@ -8,20 +8,22 @@ import { map, switchMap, Observable } from 'rxjs';
 import { HeroService } from '../../services/hero.service';
 import { Hero } from '../../models/hero.model';
 import { HeroDetailCardComponent } from '../../components/hero-detail-card/hero-detail-card.component';
+import { EntityNotFoundComponent } from '../../../../shared/components/entity-not-found/entity-not-found.component';
 
 @Component({
   selector: 'app-hero-detail-page',
   imports: [
     MatProgressSpinner,
-    HeroDetailCardComponent
+    HeroDetailCardComponent,
+    EntityNotFoundComponent
   ],
   templateUrl: './hero-detail-page.html',
   styleUrl: './hero-detail-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeroDetailPage {
-  private router = inject(ActivatedRoute);
 
+  private readonly router = inject(ActivatedRoute);
   private readonly heroService = inject(HeroService);
 
 
@@ -33,11 +35,11 @@ export class HeroDetailPage {
     })
   );
 
-  readonly hero: Signal<Hero | undefined> = toSignal(
+  readonly hero: Signal<Hero | undefined | null> = toSignal(
     this.heroId$.pipe(
       switchMap(id => this.heroService.getHeroById(id))
     ),
-    { initialValue: undefined }
+    { initialValue: null }
   );
 
 

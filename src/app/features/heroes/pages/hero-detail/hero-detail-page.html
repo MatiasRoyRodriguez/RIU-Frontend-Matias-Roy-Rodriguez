@@ -1,9 +1,15 @@
 <div class="detail-container">
-  @if (hero(); as selectedHero) {
-    <app-hero-detail-card [hero]="selectedHero" />
+  @if (hero() === null) {
+  <div class="spinner-container">
+    <mat-spinner />
+  </div>
+  } @else if (hero() === undefined) {
+  <app-entity-not-found
+    entityName="hero"
+    redirectPath="/"
+    backLabel="all heroes"
+  />
   } @else {
-    <div class="spinner-container">
-      <mat-spinner />
-    </div>
+  <app-hero-detail-card [hero]="hero()!" />
   }
 </div>

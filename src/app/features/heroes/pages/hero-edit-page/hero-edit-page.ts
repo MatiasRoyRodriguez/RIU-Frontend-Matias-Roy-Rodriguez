@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -8,12 +8,14 @@ import { map, Observable, switchMap } from 'rxjs';
 import { HeroService } from '../../services/hero.service';
 import { Hero } from '../../models/hero.model';
 import { HeroFormComponent } from '../../components/hero-form/hero-form.component';
+import { EntityNotFoundComponent } from '../../../../shared/components/entity-not-found/entity-not-found.component';
 
 @Component({
   selector: 'app-hero-edit-page',
   imports: [
     HeroFormComponent,
-    MatProgressSpinner
+    MatProgressSpinner,
+    EntityNotFoundComponent
   ],
   templateUrl: './hero-edit-page.html',
   styleUrl: './hero-edit-page.scss'
@@ -33,12 +35,13 @@ export class HeroEditPage {
     })
   );
 
-  readonly hero: Signal<Hero | undefined> = toSignal(
+  readonly hero: Signal<Hero | undefined | null> = toSignal(
     this.heroId$.pipe(
       switchMap(id => this.heroService.getHeroById(id))
     ),
-    { initialValue: undefined }
+    { initialValue: null }
   );
+
 
   onSubmit(hero: Hero): void {
     this.loading = true;

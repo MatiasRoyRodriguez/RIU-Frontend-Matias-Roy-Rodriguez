@@ -1,0 +1,11 @@
+<div class="entity-not-found">
+  <p>⚠️ The {{ entityName }} you are looking for was not found.</p>
+  <button
+    *ngIf="redirectPath"
+    mat-raised-button
+    color="primary"
+    [routerLink]="redirectPath"
+  >
+    ← Back to {{ backLabel }}
+  </button>
+</div>
