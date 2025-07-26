@@ -1,4 +1,4 @@
-import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -20,10 +20,17 @@ import { Hero } from '../../models/hero.model';
 })
 export class HeroDetailCardComponent {
   @Input({ required: true }) hero!: Hero;
+  @Output() delete = new EventEmitter<number>();
+
   private router = inject(Router);
 
   onEditClick(event: Event) {
     event.stopPropagation();
     this.router.navigate(['/heroes', this.hero.id, 'edit']);
+  }
+
+  onDeleteClick(event: Event) {
+    event.stopPropagation();
+    this.delete.emit(this.hero.id);
   }
 }

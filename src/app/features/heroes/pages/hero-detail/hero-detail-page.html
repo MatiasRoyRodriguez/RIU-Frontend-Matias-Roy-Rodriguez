@@ -10,6 +10,6 @@
     backLabel="all heroes"
   />
   } @else {
-  <app-hero-detail-card [hero]="hero()!" />
+  <app-hero-detail-card [hero]="hero()!"  (delete)="onDelete($event)"/>
   }
 </div>

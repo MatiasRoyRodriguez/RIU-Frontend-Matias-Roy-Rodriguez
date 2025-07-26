@@ -8,17 +8,20 @@
     </button>
   </div>
 
-  @if (heroes$ | async; as heroes) {
+  @if (heroes() === null) {
+  <div class="spinner-container">
+    <mat-spinner />
+  </div>
+  } @else if (heroes().length === 0) {
+  <p>No heroes found.</p>
+  }@else {
   <div class="hero-list">
     <div class="cards-container">
-      @for(hero of heroes; track hero.id) {
-      <app-hero-card [hero]="hero" />
+      @for (hero of heroes(); track hero.id) {
+      <app-hero-card [hero]="hero" (delete)="onDelete($event)" />
       }
     </div>
   </div>
-  } @else {
-  <div class="spinner-container">
-    <mat-spinner></mat-spinner>
-  </div>
   }
+
 </div>

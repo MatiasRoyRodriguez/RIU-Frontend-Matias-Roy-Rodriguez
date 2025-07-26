@@ -1,6 +1,10 @@
 <button mat-button color="accent" [routerLink]="['/']">← Back</button>
 <mat-card class="hero-detail-card">
-  <img mat-card-image [src]="hero.image || 'https://placehold.co/300x400?text=?'" [alt]="hero.name" />
+  <img
+    mat-card-image
+    [src]="hero.image || 'https://placehold.co/300x400?text=?'"
+    [alt]="hero.name"
+  />
   <mat-card-header>
     <mat-card-title>{{ hero.name }}</mat-card-title>
     <mat-card-subtitle>{{ hero.power }}</mat-card-subtitle>
@@ -15,6 +19,14 @@
       aria-label="Edit hero"
     >
       <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="onDeleteClick($event)"
+      aria-label="Delete hero"
+    >
+      <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>
