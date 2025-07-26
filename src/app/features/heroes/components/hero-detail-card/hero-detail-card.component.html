@@ -1,3 +1,4 @@
+<button mat-button color="accent" [routerLink]="['/']">← Back</button>
 <mat-card class="hero-detail-card">
   <img mat-card-image [src]="hero.image" [alt]="hero.name" />
   <mat-card-header>
@@ -7,4 +8,13 @@
   <mat-card-content>
     {{ hero.description }}
   </mat-card-content>
+  <mat-card-actions align="end">
+    <button
+      mat-icon-button
+      (click)="onEditClick($event)"
+      aria-label="Edit hero"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-card-actions>
 </mat-card>

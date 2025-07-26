@@ -1,12 +1,19 @@
-<a [routerLink]="['/hero', hero.id]">
-  <mat-card class="hero-card">
-    <img mat-card-image [src]="hero.image" [alt]="hero.name" class="hero-img" />
-    <mat-card-header>
-      <mat-card-title>{{ hero.name }}</mat-card-title>
-      <mat-card-subtitle>{{ hero.power }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ hero.description }}</p>
-    </mat-card-content>
-  </mat-card>
-</a>
+<mat-card class="hero-card" (click)="goToDetail()">
+  <img mat-card-image [src]="hero.image" [alt]="hero.name" class="hero-img" />
+  <mat-card-header>
+    <mat-card-title>{{ hero.name }}</mat-card-title>
+    <mat-card-subtitle>{{ hero.power }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ hero.description }}</p>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button
+      mat-icon-button
+      (click)="onEditClick($event)"
+      aria-label="Edit hero"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
