@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="hero-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Image URL</mat-label>
+    <input matInput formControlName="image" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Power</mat-label>
+    <input matInput formControlName="power" />
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="form.invalid"
+  >
+    <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+    <span *ngIf="!loading">Save Hero</span>
+  </button>
+</form>
+<button mat-button color="accent" [routerLink]="['/']">← Back</button>
