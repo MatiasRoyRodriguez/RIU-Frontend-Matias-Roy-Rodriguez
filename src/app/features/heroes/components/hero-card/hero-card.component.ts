@@ -23,7 +23,7 @@ export class HeroCardComponent {
   private router = inject(Router);
 
   goToDetail() {
-    this.router.navigate(['/hero', this.hero.id]);
+    this.router.navigate(['/heroes', this.hero.id]);
   }
 
   onEditClick(event: Event) {
