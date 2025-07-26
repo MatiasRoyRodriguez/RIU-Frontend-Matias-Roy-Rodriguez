@@ -1,0 +1,11 @@
+<div class="page-container">
+  <h1>Edit Hero</h1>
+
+  @if (hero(); as hero) {
+  <app-hero-form [hero]="hero" (submitForm)="onSubmit($event)" />
+  } @else {
+  <div class="spinner-container">
+    <mat-spinner />
+  </div>
+  }
+</div>
