@@ -7,11 +7,13 @@ import { map, switchMap, Observable } from 'rxjs';
 
 import { HeroService } from '../../services/hero.service';
 import { Hero } from '../../models/hero.model';
+import { HeroDetailCardComponent } from '../../components/hero-detail-card/hero-detail-card.component';
 
 @Component({
   selector: 'app-hero-detail-page',
   imports: [
     MatProgressSpinner,
+    HeroDetailCardComponent
   ],
   templateUrl: './hero-detail-page.html',
   styleUrl: './hero-detail-page.scss',

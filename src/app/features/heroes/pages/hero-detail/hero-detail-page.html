@@ -1,6 +1,6 @@
 <div class="detail-container">
   @if (hero(); as selectedHero) {
-    <!-- TODO: Add hero card -->
+    <app-hero-detail-card [hero]="selectedHero" />
   } @else {
     <div class="spinner-container">
       <mat-spinner />

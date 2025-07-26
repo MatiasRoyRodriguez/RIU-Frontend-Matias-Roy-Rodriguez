@@ -1,0 +1,14 @@
+.hero-detail-card {
+  max-width: 500px;
+  margin: 2rem auto;
+  color: white;
+
+  img {
+    object-fit: cover;
+    height: 400px;
+  }
+
+  mat-card-header {
+    margin-bottom: 1rem;
+  }
+}
