@@ -1,6 +1,15 @@
 <div class="page-container">
   <h1>Our Heroes</h1>
 
+  <mat-form-field appearance="outline">
+    <mat-label>Search Hero</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      placeholder="Type a name..."
+    />
+  </mat-form-field>
+
   <div class="header-actions">
     <button mat-raised-button color="primary" [routerLink]="['/heroes/create']">
       <mat-icon>add</mat-icon>
@@ -23,5 +32,4 @@
     </div>
   </div>
   }
-
 </div>

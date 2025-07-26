@@ -11,8 +11,14 @@
 
 .header-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .search-field {
+    flex: 1;
+  }
 
   button {
     font-weight: bold;
