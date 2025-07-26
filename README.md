@@ -1,59 +1,83 @@
 # RiuFrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
 
-## Development server
+## 🛠️ Stack
 
-To start a local development server, run:
+- Angular 19 (Standalone APIs)
+- Angular Signals
+- Angular Material
+- Jest for unit testing
+- Docker + Nginx
+- RxJS
+- Feature-based architecture with clean practices
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🚀 Getting Started
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Development Server
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+Navigate to [http://localhost:4200](http://localhost:4200). The app will auto-reload on file changes.
 
-To build the project run:
+---
+
+## 🏗️ Production Build
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build output is stored in `dist/riu-frontend/browser`.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🧪 Running Unit Tests
+
+This project uses **Jest** instead of Karma.
 
 ```bash
-ng test
+npm test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+To check coverage:
 
 ```bash
-ng e2e
+npm run test:coverage
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The report will be generated in `coverage/riu-frontend/`.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🐳 Docker Support
+
+You can build and run the app with Docker and Docker Compose.
+
+### Build the image
+
+```bash
+docker build -t angular-heroes-app .
+```
+
+### Run with Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+App will be available at: [http://localhost:4200](http://localhost:4200)
+
+---
+
+## 📌 Notes
+
+- `withFakeLoading` is used to simulate HTTP requests and trigger the loading interceptor.
+- The UI shows a global loading spinner while editing or deleting entities.
+- Feature modules follow a clean separation of logic between pages, components, services, and shared utilities.
+
+Enjoy 🚀
