@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +19,7 @@ import { Hero } from '../../models/hero.model';
     MatButtonModule,
     MatProgressSpinnerModule,
     NgIf,
+    NgFor,
     RouterLink
   ],
   templateUrl: './hero-form.component.html',
@@ -35,10 +36,10 @@ export class HeroFormComponent {
 
   form = this.fb.group({
     id: this.fb.control(0),
-    name: this.fb.control('', { nonNullable: true }),
-    description: this.fb.control('', { nonNullable: true }),
-    image: this.fb.control('', { nonNullable: true }),
-    power: this.fb.control('', { nonNullable: true })
+    name: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], nonNullable: true }),
+    description: this.fb.control('', { validators: [Validators.required, Validators.maxLength(230)], nonNullable: true }),
+    image: this.fb.control(''),
+    power: this.fb.control('', { validators: [Validators.required, Validators.minLength(3)], nonNullable: true })
   });
 
   ngOnInit(): void {
@@ -47,7 +48,26 @@ export class HeroFormComponent {
     }
   }
 
+
+  getErrorMessage(fieldName: keyof Hero): string[] {
+    const control = this.form.get(fieldName);
+    if (!control || !control.errors || (!control.touched && !control.dirty)) return [];
+    const messages: string[] = [];
+
+    if (control.errors['required']) messages.push(`${this.prettyFieldName(fieldName)} is required`);
+    if (control.errors['minlength']) messages.push(`${this.prettyFieldName(fieldName)} is too short`);
+    if (control.errors['maxlength']) messages.push(`${this.prettyFieldName(fieldName)} is too long`);
+
+    return messages;
+  }
+
+  private prettyFieldName(field: string): string {
+    return field.charAt(0).toUpperCase() + field.slice(1);
+  }
+
+
   onSubmit() {
+    this.form.markAllAsTouched();
     if (this.form.valid) {
       this.submitForm.emit(this.form.getRawValue() as Hero);
     }

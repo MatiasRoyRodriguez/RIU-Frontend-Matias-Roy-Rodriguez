@@ -2,11 +2,19 @@
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
     <input matInput formControlName="name" />
+    <ng-container *ngIf="getErrorMessage('name').length > 0">
+      <mat-error *ngFor="let msg of getErrorMessage('name')">{{ msg }}</mat-error>
+    </ng-container>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Description</mat-label>
     <textarea matInput formControlName="description"></textarea>
+    <ng-container *ngIf="getErrorMessage('description').length > 0">
+      <mat-error *ngFor="let msg of getErrorMessage('description')">{{
+        msg
+      }}</mat-error>
+    </ng-container>
   </mat-form-field>
 
   <mat-form-field>
@@ -17,6 +25,9 @@
   <mat-form-field appearance="fill">
     <mat-label>Power</mat-label>
     <input matInput formControlName="power" />
+    <ng-container *ngIf="getErrorMessage('power').length > 0">
+      <mat-error *ngFor="let msg of getErrorMessage('power')">{{ msg }}</mat-error>
+    </ng-container>
   </mat-form-field>
 
   <button
