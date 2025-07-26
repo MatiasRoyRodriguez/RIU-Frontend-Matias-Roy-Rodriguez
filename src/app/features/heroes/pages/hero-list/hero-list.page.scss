@@ -8,3 +8,14 @@
   justify-content: center;
   gap: 1.5rem;
 }
+
+.header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+
+  button {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

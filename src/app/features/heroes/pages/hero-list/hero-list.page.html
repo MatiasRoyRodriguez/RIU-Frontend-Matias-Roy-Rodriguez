@@ -1,6 +1,13 @@
 <div class="page-container">
   <h1>Our Heroes</h1>
 
+  <div class="header-actions">
+    <button mat-raised-button color="primary" [routerLink]="['/heroes/create']">
+      <mat-icon>add</mat-icon>
+      Add Hero
+    </button>
+  </div>
+
   @if (heroes$ | async; as heroes) {
   <div class="hero-list">
     <div class="cards-container">
