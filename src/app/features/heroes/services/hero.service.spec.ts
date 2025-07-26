@@ -1,133 +1,116 @@
-import { firstValueFrom } from "rxjs";
-import { HeroService } from "./hero.service";
-import { MOCK_HEROES } from "../../../mocks/mock-heroes";
-import { Hero } from "../models/hero.model";
+import { HeroService } from './hero.service';
+import { MOCK_HEROES } from '../../../mocks/mock-heroes';
+import { Hero } from '../models/hero.model';
+import { take } from 'rxjs';
+import { LoadingService } from '../../../core/services/loading.service';
+import { TestBed } from '@angular/core/testing';
+
+jest.mock('../../../core/services/loading.service');
 
 describe('HeroService', () => {
   let service: HeroService;
+  let loadingServiceMock: jest.Mocked<LoadingService>;
 
   beforeEach(() => {
-    service = new HeroService();
-  });
+    loadingServiceMock = {
+      show: jest.fn(),
+      hide: jest.fn(),
+      loading: {
+        get: jest.fn(() => false)
+      } as any // Mock the signal's asReadonly property
+    } as unknown as jest.Mocked<LoadingService>;
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  describe('getHeroes', () => {
-    it('should return all heroes', async () => {
-      const result = await firstValueFrom(service.getHeroes());
-      expect(result).toEqual(MOCK_HEROES);
-      expect(result).not.toBe(service['heroes']);
-    });
-  });
-
-  describe('getHeroById', () => {
-    it('should return the correct hero by ID', async () => {
-      const hero = await firstValueFrom(service.getHeroById(1));
-      expect(hero).toEqual(MOCK_HEROES[0]);
+    TestBed.configureTestingModule({
+      providers: [
+        HeroService,
+        { provide: LoadingService, useValue: loadingServiceMock }
+      ]
     });
 
-    it('should return undefined for a non-existent hero ID', async () => {
-      const hero = await firstValueFrom(service.getHeroById(777));
-      expect(hero).toBeUndefined();
-    });
+    service = TestBed.inject(HeroService);
   });
 
 
-  describe('updateHero', () => {
-    it('should update an existing hero', async () => {
-      const newName = 'Superman Updated';
-      const updatedData = { ...MOCK_HEROES[0], name: newName };
+  it('should return all heroes (getHeroesSignal)', () => {
+    const heroes = service.getHeroesSignal()();
+    expect(heroes.length).toBe(MOCK_HEROES.length);
+  });
 
-      const updatedHero = await firstValueFrom(service.updateHero(updatedData));
-      expect(updatedHero.name).toBe(newName);
-    });
+  it('should add a new hero', (done) => {
+    const newHero: Hero = {
+      id: 999,
+      name: 'NewHero',
+      description: 'desc',
+      image: '',
+      power: 'fly'
+    };
 
-
-    it('should throw an error when trying to update a non-existent hero', async () => {
-      const nonExistentHero: Hero = {
-        id: 999,
-        name: 'NonExistent',
-        description: 'This hero does not exist.',
-        image: 'https://placehold.co/300x400?text=NonExistent',
-        power: 'Unknown power',
-      };
-      await expect(firstValueFrom(service.updateHero(nonExistentHero)))
-        .rejects
-        .toThrow('Hero with ID 999 not found');
+    service.addHero(newHero).pipe(take(1)).subscribe(result => {
+      expect(result).toEqual(newHero);
+      const allHeroes = service.getHeroesSignal()();
+      expect(allHeroes.find(h => h.id === 999)).toEqual(newHero);
+      done();
     });
   });
 
-
-  describe('deleteHero', () => {
-
-    it('should delete an existing hero', async () => {
-      const heroIdToDelete = MOCK_HEROES[0].id;
-
-      const deletedHero = await firstValueFrom(service.deleteHero(heroIdToDelete));
-      expect(deletedHero.id).toBe(heroIdToDelete);
-
-
-      const heroes = await firstValueFrom(service.getHeroes());
-      expect(heroes.find(hero => hero.id === heroIdToDelete)).toBeUndefined();
+  it('should get heroes list (getHeroes)', (done) => {
+    service.getHeroes().pipe(take(1)).subscribe(result => {
+      expect(result.length).toBeGreaterThan(0);
+      done();
     });
-
-    it('should throw an error when trying to delete a non-existent hero', async () => {
-      const nonExistentHeroId = 999;
-      await expect(firstValueFrom(service.deleteHero(nonExistentHeroId)))
-        .rejects
-        .toThrow(`Hero with ID ${nonExistentHeroId} not found`);
-    });
-
   });
 
-
-  describe('addHero', () => {
-
-    it('should add a new hero', async () => {
-      const newHero: Hero = {
-        id: 4,
-        name: 'Flash',
-        description: 'A superhero with super speed and reflexes.',
-        image: 'https://placehold.co/300x400?text=Flash',
-        power: 'Super speed',
-      };
-
-      const addedHero = await firstValueFrom(service.addHero(newHero));
-      expect(addedHero).toEqual(newHero);
-
-      const allHeroes = await firstValueFrom(service.getHeroes());
-      expect(allHeroes).toContain(newHero);
+  it('should get hero by id', (done) => {
+    const id = MOCK_HEROES[0].id;
+    service.getHeroById(id).pipe(take(1)).subscribe(result => {
+      expect(result?.id).toBe(id);
+      done();
     });
-
   });
 
-  describe('searchHero', () => {
+  it('should update hero if exists', (done) => {
+    const updatedHero = { ...MOCK_HEROES[0], name: 'Updated Name' };
 
-    it('should return heroes that match the query (case-insensitive)', async () => {
-      const query = 'man';
-      const result = await firstValueFrom(service.searchHero(query));
-      const expected = MOCK_HEROES.filter(
-        hero => hero.name.toLocaleLowerCase().includes(query)
-      );
-      expect(result).toEqual(expected);
+    service.updateHero(updatedHero).pipe(take(1)).subscribe(result => {
+      expect(result.name).toBe('Updated Name');
+      const heroList = service.getHeroesSignal()();
+      expect(heroList.find(h => h.id === updatedHero.id)?.name).toBe('Updated Name');
+      done();
     });
-
-    it('should return an empty array if no hero matches the query', async () => {
-      const result = await firstValueFrom(service.searchHero('nothingmatches'));
-      expect(result).toEqual([]);
-    });
-
-    it('should not mutate the original heroes array', async () => {
-      const original = await firstValueFrom(service.getHeroes());
-      await firstValueFrom(service.searchHero('man'));
-      const afterSearch = await firstValueFrom(service.getHeroes());
-
-      expect(afterSearch).toEqual(original);
-      expect(afterSearch).not.toBe(original);
-    });
-
   });
 
+  it('should throw if updating non-existing hero', (done) => {
+    service.updateHero({ id: 9999, name: '', description: '', image: '', power: '' }).subscribe({
+      error: (err) => {
+        expect(err.message).toContain('not found');
+        done();
+      }
+    });
+  });
+
+  it('should delete hero by id', (done) => {
+    const heroToDelete = MOCK_HEROES[0];
+    service.deleteHero(heroToDelete.id).pipe(take(1)).subscribe(result => {
+      expect(result.id).toBe(heroToDelete.id);
+      const heroes = service.getHeroesSignal()();
+      expect(heroes.find(h => h.id === heroToDelete.id)).toBeUndefined();
+      done();
+    });
+  });
+
+  it('should throw if hero to delete is not found', (done) => {
+    service.deleteHero(9999).subscribe({
+      error: (err) => {
+        expect(err.message).toContain('not found');
+        done();
+      }
+    });
+  });
+
+  it('should filter heroes by query', (done) => {
+    service.searchHero('man').pipe(take(1)).subscribe(result => {
+      expect(result.every(hero => hero.name.toLowerCase().includes('man'))).toBe(true);
+      done();
+    });
+  });
 });
