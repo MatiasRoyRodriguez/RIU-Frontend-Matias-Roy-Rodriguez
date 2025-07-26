@@ -1,10 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { Hero } from '../../models/hero.model';
 import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 
+import { Hero } from '../../models/hero.model';
 @Component({
   selector: 'app-hero-card',
-  imports: [MatCardModule],
+  imports: [
+    MatCardModule,
+    RouterLink
+  ],
   templateUrl: './hero-card.component.html',
   styleUrl: './hero-card.component.scss'
 })
