@@ -25,3 +25,11 @@
     text-transform: uppercase;
   }
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  align-items: center;
+}

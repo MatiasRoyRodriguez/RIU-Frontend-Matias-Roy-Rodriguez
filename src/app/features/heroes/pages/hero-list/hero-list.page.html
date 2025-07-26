@@ -17,19 +17,36 @@
     </button>
   </div>
 
-  @if (heroes() === null) {
+  @if (paginatedHeroes() === null) {
   <div class="spinner-container">
     <mat-spinner />
   </div>
-  } @else if (heroes().length === 0) {
+  } @else if (paginatedHeroes().length === 0) {
   <p>No heroes found.</p>
   }@else {
   <div class="hero-list">
     <div class="cards-container">
-      @for (hero of heroes(); track hero.id) {
+      @for (hero of paginatedHeroes(); track hero.id) {
       <app-hero-card [hero]="hero" (delete)="onDelete($event)" />
       }
     </div>
+  </div>
+  <div class="pagination-controls">
+    <button
+      mat-stroked-button
+      (click)="prevPage()"
+      [disabled]="currentPage() === 1"
+    >
+      Previous
+    </button>
+    <span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+    <button
+      mat-stroked-button
+      (click)="nextPage()"
+      [disabled]="currentPage() === totalPages()"
+    >
+      Next
+    </button>
   </div>
   }
 </div>
