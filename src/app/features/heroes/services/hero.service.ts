@@ -1,7 +1,9 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Hero } from '../models/hero.model';
 import { delay, Observable, of, throwError } from 'rxjs';
 import { MOCK_HEROES } from '../../../mocks/mock-heroes';
+import { LoadingService } from '../../../core/services/loading.service';
+import { withFakeLoading } from '../../../shared/utils/fake-loading';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,10 @@ import { MOCK_HEROES } from '../../../mocks/mock-heroes';
 export class HeroService {
 
   private readonly _heroes = signal<Hero[]>([...MOCK_HEROES]);
+
+  // El uso de LoadingService y withFakeLoading es exclusivo para simular el comportamiento del interceptor de loading para editar y borrar como pide el challenge.
+  // En un entorno real con peticiones HTTP, esto sería innecesario ya que el interceptor manejaría automáticamente el spinner.
+  private readonly loadingService = inject(LoadingService);
 
   getHeroesSignal() {
     return this._heroes.asReadonly();
@@ -37,17 +43,19 @@ export class HeroService {
     this._heroes.update(current =>
       current.map(hero => hero.id === updatedHero.id ? { ...hero, ...updatedHero } : hero)
     );
-    return of(updatedHero).pipe(delay(300));
+    return withFakeLoading(of(updatedHero).pipe(delay(300)), this.loadingService);
   }
 
   deleteHero(id: number): Observable<Hero> {
+    this.loadingService.show();
+
     const hero = this._heroes().find(hero => hero.id === id);
     if (!hero) {
       return throwError(() => new Error(`Hero with ID ${id} not found`));
     }
 
     this._heroes.update(current => current.filter(hero => hero.id !== id));
-    return of(hero).pipe(delay(300));
+    return withFakeLoading(of(hero).pipe(delay(300)), this.loadingService);
   }
 
 
