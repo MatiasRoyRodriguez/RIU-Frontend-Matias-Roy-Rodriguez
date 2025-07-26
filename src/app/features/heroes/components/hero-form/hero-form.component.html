@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="hero-form">
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
-    <input matInput formControlName="name" />
+    <input matInput formControlName="name" [appUppercase]="true" />
     <ng-container *ngIf="getErrorMessage('name').length > 0">
       <mat-error *ngFor="let msg of getErrorMessage('name')">{{ msg }}</mat-error>
     </ng-container>

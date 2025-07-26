@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { Hero } from '../../models/hero.model';
+import { UppercaseDirective } from '../../../../shared/directives/uppercase.directive';
 @Component({
   selector: 'app-hero-form',
   imports: [
@@ -20,7 +21,8 @@ import { Hero } from '../../models/hero.model';
     MatProgressSpinnerModule,
     NgIf,
     NgFor,
-    RouterLink
+    RouterLink,
+    UppercaseDirective
   ],
   templateUrl: './hero-form.component.html',
   styleUrl: './hero-form.component.scss',
